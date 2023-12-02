@@ -45,6 +45,16 @@ func (s *Simulator) Run() (res map[string]uint) {
 	//result map
 	res = make(map[string]uint)
 
+	//Store initial values of the qubits and classical registers
+	initQubitsValues := make([]Qubit, s.circuit.numQubits)
+	for i := 0; i < s.circuit.numQubits; i++ {
+		initQubitsValues[i] = s.circuit.qubitsValues[i]
+	}
+	initClassicalRegister := make([]int, len(s.circuit.classicalRegister))
+	for i := 0; i < len(s.circuit.classicalRegister); i++ {
+		initClassicalRegister[i] = s.circuit.classicalRegister[i]
+	}
+
 	//Création des channels : un par paire de qubits
 	var nbChannels int = (s.circuit.numQubits * (s.circuit.numQubits - 1)) / 2
 
@@ -69,6 +79,7 @@ func (s *Simulator) Run() (res map[string]uint) {
 		}
 	}
 
+	//TODO : penser à remettre la valeur initiale des qubits et des registres à l'origine
 	for numShot := 0; numShot < int(s.shots); numShot++ {
 		//On simule un shot
 		resChan := make(chan string)
@@ -106,6 +117,15 @@ func (s *Simulator) Run() (res map[string]uint) {
 			res[resShot] = 1
 		} else {
 			res[resShot]++
+		}
+
+		//On remet les qubits à leur état initial
+		for i := 0; i < s.circuit.numQubits; i++ {
+			s.circuit.qubitsValues[i] = initQubitsValues[i]
+		}
+		//On remet le registre classique à son état initial
+		for i := 0; i < len(s.circuit.classicalRegister); i++ {
+			s.circuit.classicalRegister[i] = initClassicalRegister[i]
 		}
 
 	}

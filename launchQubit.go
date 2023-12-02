@@ -53,6 +53,7 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit, resCha
 		default:
 			//For any other operation than measure and initialization
 			var nbQubits int = len(op.Qubits())
+
 			if nbQubits == 1 {
 				//If only one qubit is involved, apply the gate
 				qubitToVector := c.qubitsValues[numQubit].Vector()
@@ -62,7 +63,10 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit, resCha
 					fmt.Println("Value init : ", c.qubitsValues[numQubit])
 					fmt.Println("calc : ", calc)
 				*/
+				//fmt.Println("Value before ", op.Gate().Id(), " : ", c.qubitsValues[numQubit])
 				c.SetQubit(numQubit, calc[0][0], calc[1][0])
+				//fmt.Println("Value after ", op.gate.id, " : ", c.qubitsValues[numQubit])
+			} else {
 
 			}
 
