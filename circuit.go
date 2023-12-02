@@ -2,10 +2,7 @@ package quantut
 
 import (
 	"fmt"
-	"math/cmplx"
-	"math/rand"
 	"quantut/utils"
-	"time"
 )
 
 type QuantumCircuit struct {
@@ -156,116 +153,4 @@ func (c *QuantumCircuit) InitializeQubit(numQubit int, comp1 complex128, comp2 c
 
 	c.operations = append(c.operations, Operation{gate: initialization, qubits: []int{numQubit}, options: []complex128{comp1, comp2}})
 
-}
-
-// =============== Measure ===============
-func (c *QuantumCircuit) Measure(qubit int, register int) {
-	if qubit >= c.numQubits || qubit < 0 {
-		panic("Qubit number out of range")
-	}
-	if register >= len(c.classicalRegister) || register < 0 {
-		panic("Register number out of range")
-	}
-	c.operations = append(c.operations, Operation{gate: measure, qubits: []int{qubit, register}})
-}
-
-func (c *QuantumCircuit) MeasureEffect(qubit int, register int) {
-	if qubit >= c.numQubits || qubit < 0 {
-		panic("Qubit number out of range")
-	}
-	if register >= len(c.classicalRegister) || register < 0 {
-		panic("Register number out of range")
-	}
-	// The result of he measure is 0 or 1 depending on the value of the qubit.
-	// The result is stored in the classical register
-
-	rand.Seed(time.Now().UnixNano())
-	// We generate a random number between 0 and 1
-	random := rand.Float64()
-	// We compare it to the probability of the qubit to be 0
-	fmt.Println("random : ", random)
-	fmt.Println("qubit : ", c.qubitsValues[qubit])
-	fmt.Println("module : ", cmplx.Abs(c.qubitsValues[qubit][0]))
-	var resMeasure int
-	if random <= cmplx.Abs(c.qubitsValues[qubit][0]) {
-		c.classicalRegister[register] = 0
-		resMeasure = 0
-	} else {
-		c.classicalRegister[register] = 1
-		resMeasure = 1
-	}
-
-	//TODO vérifier que la projection se passe comme ça
-	c.qubitsValues[qubit].Init(complex(1-float64(resMeasure), 0), complex(0, float64(resMeasure)))
-}
-
-// Launch operations on a qubit
-func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit, resChan chan string) {
-	//Create map for easier use of channels
-	qubitChanMap := make(map[int]chan Qubit, len(channels))
-	for i := 0; i < len(channels); i++ {
-		if i < numQubit {
-			qubitChanMap[i] = channels[i]
-		} else {
-			qubitChanMap[i+1] = channels[i]
-		}
-	}
-
-	//Apply operations
-	for _, op := range c.operations {
-		if len(c.operations) == 0 {
-			panic("Operartion is applied on no qubit")
-		}
-
-		// Check if the qubit is involved in the operation
-		var qubitInOperation bool = op.IsQubitInOperation(numQubit)
-		if !qubitInOperation {
-			//If not, next operation
-			continue
-		}
-
-		// Particular cases : measure and initialization
-		switch op.Gate().Id() {
-
-		case "MEASURE":
-			if len(op.Qubits()) != 2 {
-				panic("Measure operation must have 1 qubit and 1 classical register")
-			}
-			//Measure the qubit in the classical register
-			c.MeasureEffect(op.Qubits()[0], op.Qubits()[1])
-
-		case "INIT":
-			if len(op.Qubits()) != 1 {
-				panic("Initialization operation must have 1 qubit")
-			}
-			if len(op.Options()) != 2 {
-				panic("Initialization operation must have 2 values for the qubit")
-			}
-			//Initialize the qubit
-			c.SetQubit(op.Qubits()[0], op.Options()[0], op.Options()[1])
-
-		default:
-			//For any other operation than measure and initialization
-			var nbQubits int = len(op.Qubits())
-			if nbQubits == 1 {
-				//If only one qubit is involved, apply the gate
-				qubitToVector := c.qubitsValues[numQubit].Vector()
-				var calc = utils.ComplexMatrixMultiply(op.Gate().Effect(), qubitToVector)
-				/*
-					fmt.Println("Op : ", op.Gate().Effect())
-					fmt.Println("Value init : ", c.qubitsValues[numQubit])
-					fmt.Println("calc : ", calc)
-				*/
-				c.SetQubit(numQubit, calc[0][0], calc[1][0])
-
-			}
-
-		}
-	}
-	//Test synchronisation
-	res := 0
-	if numQubit%2 == 0 {
-		res = 1
-	}
-	resChan <- fmt.Sprintf("%d,%d", numQubit, res)
 }
