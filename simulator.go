@@ -1,6 +1,9 @@
 package quantut
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 /*
 * The simulator is the object that will run the circuit
@@ -51,9 +54,7 @@ func (s *Simulator) Run() (res map[string]uint) {
 		initQubitsValues[i] = s.circuit.qubitsValues[i]
 	}
 	initClassicalRegister := make([]int, len(s.circuit.classicalRegister))
-	for i := 0; i < len(s.circuit.classicalRegister); i++ {
-		initClassicalRegister[i] = s.circuit.classicalRegister[i]
-	}
+	copy(initClassicalRegister, s.circuit.classicalRegister)
 
 	//Création des channels : un par paire de qubits
 	var nbChannels int = (s.circuit.numQubits * (s.circuit.numQubits - 1)) / 2
@@ -82,15 +83,24 @@ func (s *Simulator) Run() (res map[string]uint) {
 	//TODO : penser à remettre la valeur initiale des qubits et des registres à l'origine
 	for numShot := 0; numShot < int(s.shots); numShot++ {
 		//On simule un shot
-		resChan := make(chan string)
-		storeRes := make([]string, s.circuit.numQubits)
+		//resChan := make(chan string)
+		wg := sync.WaitGroup{}
+
+		//storeRes := make([]string, s.circuit.numQubits)
 		for i := 0; i < s.circuit.numQubits; i++ {
-			go s.Circuit().LaunchQubit(i, channelsMap[i], resChan)
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				go s.Circuit().LaunchQubit(i, channelsMap[i])
+			}(i)
 		}
-		//On récupère le résultat de chaque qubit
-		for i := 0; i < s.circuit.numQubits; i++ {
-			storeRes[i] = <-resChan //retourne un string "numQubit,valeur", ce qui nous permet de pouvoir ranger ces résultats par ordre alphabétique
-		}
+		wg.Wait()
+		/*
+			//On récupère le résultat de chaque qubit
+			for i := 0; i < s.circuit.numQubits; i++ {
+				storeRes[i] = <-resChan //retourne un string "numQubit,valeur", ce qui nous permet de pouvoir ranger ces résultats par ordre alphabétique
+				<-resChan
+			}*/
 
 		//TODO : dois-je enregistrer les états finaux des qubits ou ceux des registres classiques ?
 

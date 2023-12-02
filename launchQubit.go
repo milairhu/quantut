@@ -1,12 +1,11 @@
 package quantut
 
 import (
-	"fmt"
 	"quantut/utils"
 )
 
 // Launch operations on a qubit
-func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit, resChan chan string) {
+func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit) {
 	//Create map for easier use of channels
 	qubitChanMap := make(map[int]chan Qubit, len(channels))
 	for i := 0; i < len(channels); i++ {
@@ -20,7 +19,7 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit, resCha
 	//Apply operations
 	for _, op := range c.operations {
 		if len(c.operations) == 0 {
-			panic("Operartion is applied on no qubit")
+			panic("Operation is applied on no qubit")
 		}
 
 		// Check if the qubit is involved in the operation
@@ -73,9 +72,11 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit, resCha
 		}
 	}
 	//Test synchronisation
+	/* //Si besoin de recevoir un résultat
 	res := 0
 	if numQubit%2 == 0 {
 		res = 1
 	}
 	resChan <- fmt.Sprintf("%d,%d", numQubit, res)
+	*/
 }

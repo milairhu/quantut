@@ -11,7 +11,6 @@ func main() {
 	circuit.SetQubit(1, 0, 1)               //on initialise le qubit 1 à 1 immédiatement, avant la simulation
 	circuit.InitClassicalRegister(2)        //on crée un registre classique de 2 bits
 	//Remarque : InitClassicalRegister et SetQubit sont appliqués directement, pas au lancement de la simulation
-
 	circuit.Measure(0, 0) //on mesure le qubit 0 et on stocke le résultat dans le registre classique 0
 
 	simulator := quantut.NewSimulator(circuit, 1000)
