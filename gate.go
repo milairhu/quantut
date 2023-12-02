@@ -43,6 +43,9 @@ var (
 	ccnot   = Gate{id: "CCNOT", nbQubits: 3}
 	cswap   = Gate{id: "CSWAP", nbQubits: 3}
 	toffoli = Gate{id: "TOFFOLI", nbQubits: 3}
+
+	//Measure (cas particulier)
+	measure = Gate{id: "MEASURE", nbQubits: 1} //TODO être sûr que c'est ok
 )
 
 //Méthods

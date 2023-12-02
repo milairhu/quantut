@@ -1,12 +1,5 @@
 package quantut
 
-import (
-	"fmt"
-	"math/cmplx"
-	"math/rand"
-	"time"
-)
-
 type QuantumCircuit struct {
 	numQubits         int         //Number of qubits involved
 	operations        []Operation //Operations to apply on the circuit
@@ -54,9 +47,21 @@ func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex1
 	c.qubitsValues[numQubit].Init(comp1, comp2)
 }
 
-// Définie le nombre de registres classics
-func (c *QuantumCircuit) SetClassicalRegister(numRegister int) {
+// Define number of bits in the classical register
+func (c *QuantumCircuit) InitClassicalRegister(numRegister uint8) {
+
 	c.classicalRegister = make([]int, numRegister)
+}
+
+// Set value of a bit in the classical register
+func (c *QuantumCircuit) SetClassicalRegister(numRegister int, value int) {
+	if numRegister >= len(c.classicalRegister) || numRegister < 0 {
+		panic("Register number out of range")
+	}
+	if value != 0 && value != 1 {
+		panic("Register value must be 0 or 1")
+	}
+	c.classicalRegister[numRegister] = value
 }
 
 // =============== Add gates to the circuit ===============
@@ -140,6 +145,17 @@ func (c *QuantumCircuit) Measure(qubit int, register int) {
 	if register >= len(c.classicalRegister) || register < 0 {
 		panic("Register number out of range")
 	}
+	c.operations = append(c.operations, Operation{gate: measure, qubits: []int{qubit, register}})
+}
+
+/*
+func (c *QuantumCircuit) MeasureEffect(qubit int, register int) {
+	if qubit >= c.numQubits || qubit < 0 {
+		panic("Qubit number out of range")
+	}
+	if register >= len(c.classicalRegister) || register < 0 {
+		panic("Register number out of range")
+	}
 	// The result of he measure is 0 or 1 depending on the value of the qubit.
 	// The result is stored in the classical register
 
@@ -158,4 +174,4 @@ func (c *QuantumCircuit) Measure(qubit int, register int) {
 
 	//TODO : modifier le qubit mesuré pour qu'il soit projeté sur l'état mesuré
 
-}
+}*/
