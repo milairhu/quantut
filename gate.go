@@ -45,10 +45,10 @@ var (
 	toffoli = Gate{id: "TOFFOLI", nbQubits: 3}
 
 	//Measure (cas particulier)
-	measure = Gate{id: "MEASURE", nbQubits: 1} //TODO être sûr que c'est ok
+	measure = Gate{id: "MEASURE", nbQubits: 2} //Cas particulier : prend 1 qubit et 1 bit de registre classique
 
 	//Initialisation (cas particulier)
-	initialization = Gate{id: "INIT", nbQubits: 1} //TODO être sûr que c'est ok
+	initialization = Gate{id: "INIT", nbQubits: 1}
 )
 
 //Méthods

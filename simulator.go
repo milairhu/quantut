@@ -80,7 +80,6 @@ func (s *Simulator) Run() (res map[string]uint) {
 		}
 	}
 
-	//TODO : penser à remettre la valeur initiale des qubits et des registres à l'origine
 	for numShot := 0; numShot < int(s.shots); numShot++ {
 		//On simule un shot
 		//resChan := make(chan string)
@@ -101,8 +100,6 @@ func (s *Simulator) Run() (res map[string]uint) {
 				storeRes[i] = <-resChan //retourne un string "numQubit,valeur", ce qui nous permet de pouvoir ranger ces résultats par ordre alphabétique
 				<-resChan
 			}*/
-
-		//TODO : dois-je enregistrer les états finaux des qubits ou ceux des registres classiques ?
 
 		//Si on enregistre les états finaux des qubits :
 		/*
