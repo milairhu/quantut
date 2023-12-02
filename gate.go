@@ -46,6 +46,9 @@ var (
 
 	//Measure (cas particulier)
 	measure = Gate{id: "MEASURE", nbQubits: 1} //TODO être sûr que c'est ok
+
+	//Initialisation (cas particulier)
+	initialization = Gate{id: "INIT", nbQubits: 1} //TODO être sûr que c'est ok
 )
 
 //Méthods
