@@ -24,5 +24,5 @@ func (q *Qubit) IsNormalized() bool {
 	module := q[0]*q[0] + q[1]*q[1]
 	re := math.Round(real(module))
 	im := math.Round(imag(module))
-	return re == 1 && im == 0
+	return (re == 1 || re == -1) && im == 0
 }
