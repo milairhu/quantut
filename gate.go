@@ -42,7 +42,7 @@ var (
 		},
 	}
 
-	// Portes à 3 qubits TODO
+	// Portes à 3 qubits
 	ccnot = Gate{id: "CCNOT",
 		nbQubits:       3,
 		nbControlQubit: 2,
@@ -70,7 +70,6 @@ var (
 			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0)},
 		},
 	}
-	toffoli = Gate{id: "TOFFOLI", nbQubits: 3}
 
 	//Measure (cas particulier)
 	measure = Gate{id: "MEASURE", nbQubits: 2} //Cas particulier : prend 1 qubit et 1 bit de registre classique

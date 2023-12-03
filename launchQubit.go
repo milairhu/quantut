@@ -62,24 +62,29 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit) {
 			} else {
 				// If more than one qubit is involved, qubit must be synchronized with the others
 				// Get the other qubits involved in the operation
-				othersQubits := make([]int, nbQubits-1)
-				for i := 0; i < nbQubits; i++ {
-					if op.Qubits()[i] != numQubit {
-						othersQubits[i] = op.Qubits()[i]
-					}
+				controlQubits := make([]int, 0)
+				for i := 0; i < int(op.Gate().NbControlQubit()); i++ {
+					controlQubits = append(controlQubits, op.Qubits()[i])
+				}
+				targetQubits := make([]int, 0)
+				for i := int(op.Gate().NbControlQubit()); i < len(op.Qubits()); i++ {
+					targetQubits = append(targetQubits, op.Qubits()[i])
 				}
 				//Convention : control qubits are given first in the operation
 				//Case 1 : the qubit is a control qubit
 				if op.IsControlQubit(numQubit) {
 					//Qubit sends its value to the target qubit(s) //TODO : checker CSWAP, 2 cibles
-					for _, q := range othersQubits {
+					for _, q := range targetQubits {
 						qubitChanMap[q] <- c.qubitsValues[numQubit]
+						fmt.Println("Qubit", numQubit, "sent value to qubit", q)
 					}
 				} else { //Case 2 : the qubit is a target qubit
+					//TODO voir comment on fait pour réaliser le calcul quand on a plusieurs cible : on désigne un qubit qui fait le calcul et qui envoie le résultat aux autres ?
 					//Qubit waits for the control qubit(s) to send its value
 					receivedValues := make([]Qubit, op.gate.nbControlQubit)
-					for i, q := range othersQubits {
-						receivedValues[i] = <-qubitChanMap[q]
+					for i, q := range controlQubits {
+						receivedValues[i] = <-qubitChanMap[q] //TODO vérifier qu'on n'a pas besoin de recevoir les valeurs dans l'ordre (ou de les reranger)
+						fmt.Println("Qubit", numQubit, "received value from qubit", q)
 					}
 
 					//Apply the gate

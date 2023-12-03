@@ -35,7 +35,6 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 	random := rand.Float64() // generate a random number between 0 and 1
 
 	var resMeasure int
-	//TODO : bizarre, la proba change...
 	var proba0 float64 = cmplx.Abs(c.qubitsValues[qubit][0]) * cmplx.Abs(c.qubitsValues[qubit][0]) //Probability to get 0
 	//fmt.Println("Probability to get 0 : ", proba0)
 	if random <= proba0 { // Compare to the probability of the qubit to be 0
