@@ -88,9 +88,11 @@ func (s *Simulator) Run() (res map[string]uint) {
 		//storeRes := make([]string, s.circuit.numQubits)
 		for i := 0; i < s.circuit.numQubits; i++ {
 			wg.Add(1)
+
 			go func(i int) {
+				//Problème : toutes les go routines ne sont pas envoyées...
 				defer wg.Done()
-				go s.Circuit().LaunchQubit(i, channelsMap[i])
+				s.Circuit().LaunchQubit(i, channelsMap[i])
 			}(i)
 		}
 		wg.Wait()

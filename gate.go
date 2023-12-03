@@ -40,8 +40,31 @@ var (
 	}
 
 	// Portes à 3 qubits TODO
-	ccnot   = Gate{id: "CCNOT", nbQubits: 3}
-	cswap   = Gate{id: "CSWAP", nbQubits: 3}
+	ccnot = Gate{id: "CCNOT",
+		nbQubits: 3,
+		effect: [][]complex128{
+			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0)},
+		},
+	}
+	cswap = Gate{id: "CSWAP", nbQubits: 3,
+		effect: [][]complex128{
+			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0)},
+		},
+	}
 	toffoli = Gate{id: "TOFFOLI", nbQubits: 3}
 
 	//Measure (cas particulier)
