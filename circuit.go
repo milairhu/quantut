@@ -6,10 +6,11 @@ import (
 )
 
 type QuantumCircuit struct {
-	numQubits         int         //Number of qubits involved
-	operations        []Operation //Operations to apply on the circuit
-	qubitsValues      []Qubit     //Values of the qubits
-	classicalRegister []int       //Values of the classical register
+	numQubits         int          //Number of qubits involved
+	operations        []Operation  //Operations to apply on the circuit
+	qubitsValues      []Qubit      //Values of the qubits
+	classicalRegister []int        //Values of the classical register
+	globalState       []complex128 //Global state of the circuit. Represente the tensorial product of all qubits
 }
 
 func NewQuantumCircuit(numQubits int) *QuantumCircuit {
@@ -20,7 +21,14 @@ func NewQuantumCircuit(numQubits int) *QuantumCircuit {
 		qv[i].Init(1, 0)
 	}
 	r := make([]int, 0)
-	return &QuantumCircuit{numQubits: numQubits, operations: o, qubitsValues: qv, classicalRegister: r}
+	var nbComposante = 2
+	for i := 0; i < numQubits; i++ {
+		nbComposante *= 2
+	}
+	gs := make([]complex128, nbComposante)
+	//Global state is initialized to 0...0
+	gs[0] = 1
+	return &QuantumCircuit{numQubits: numQubits, operations: o, qubitsValues: qv, classicalRegister: r, globalState: gs}
 }
 
 // ===== Getters =====
@@ -40,6 +48,10 @@ func (c *QuantumCircuit) ClassicalRegister() []int {
 	return c.classicalRegister
 }
 
+func (c *QuantumCircuit) GlobalState() []complex128 {
+	return c.globalState
+}
+
 // === Setters ===
 func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex128) {
 	if numQubit >= c.numQubits || numQubit < 0 {
@@ -50,6 +62,13 @@ func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex1
 	}
 
 	c.qubitsValues[numQubit].Init(comp1, comp2)
+}
+
+func (c *QuantumCircuit) SetGlobalState(newState []complex128) {
+	if len(newState) != len(c.globalState) {
+		panic("New state must have the same length as the global state")
+	}
+	c.globalState = newState
 }
 
 // Define number of bits in the classical register
@@ -67,4 +86,13 @@ func (c *QuantumCircuit) SetClassicalRegister(numRegister int, value int) {
 		panic("Register value must be 0 or 1")
 	}
 	c.classicalRegister[numRegister] = value
+}
+
+// Return an array of all qubit values
+func (c *QuantumCircuit) Qubits() [][]complex128 {
+	res := make([][]complex128, c.numQubits)
+	for i := 0; i < c.numQubits; i++ {
+		res[i] = c.qubitsValues[i].ToArrComplex128()
+	}
+	return res
 }

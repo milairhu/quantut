@@ -2,7 +2,7 @@ package utils
 
 import "fmt"
 
-func ComplexMatrixMultiply(a, b [][]complex128) [][]complex128 {
+func ComplexMatrixProduct(a, b [][]complex128) [][]complex128 {
 	if len(a[0]) != len(b) {
 		panic(fmt.Sprintf("Matrix multiplication impossible : %d != %d", len(a[0]), len(b)))
 	}

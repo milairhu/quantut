@@ -16,6 +16,10 @@ func (q *Qubit) Init(comp1 complex128, comp2 complex128) {
 	q[1] = comp2
 }
 
+func (q *Qubit) ToArrComplex128() []complex128 {
+	return []complex128{q[0], q[1]}
+}
+
 func (q *Qubit) Vector() [][]complex128 {
 	return [][]complex128{{q[0]}, {q[1]}}
 }

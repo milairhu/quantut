@@ -56,7 +56,7 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit) {
 			if nbQubits == 1 {
 				//If only one qubit is involved, apply the gate
 				qubitToVector := c.qubitsValues[numQubit].Vector()
-				var calc = utils.ComplexMatrixMultiply(op.Gate().Effect(), qubitToVector)
+				var calc = utils.ComplexMatrixProduct(op.Gate().Effect(), qubitToVector)
 				/*
 					fmt.Println("Op : ", op.Gate().Effect())
 					fmt.Println("Value init : ", c.qubitsValues[numQubit])
