@@ -38,6 +38,8 @@ func (c *QuantumCircuit) Z(numQubit int) {
 	c.operations = append(c.operations, Operation{gate: z, qubits: []int{numQubit}})
 }
 
+//CONVENTION : control qubits are the first ones in the list of parameters
+
 // CNOT
 func (c *QuantumCircuit) CNOT(control int, target int) {
 	if control >= c.numQubits || control < 0 || target >= c.numQubits || target < 0 {
@@ -68,14 +70,6 @@ func (c *QuantumCircuit) CSWAP(control int, target1 int, target2 int) {
 		panic("Qubit number out of range")
 	}
 	c.operations = append(c.operations, Operation{gate: cswap, qubits: []int{control, target1, target2}})
-}
-
-// TOFFOLI
-func (c *QuantumCircuit) TOFFOLI(control1 int, control2 int, target int) {
-	if control1 >= c.numQubits || control1 < 0 || control2 >= c.numQubits || control2 < 0 || target >= c.numQubits || target < 0 {
-		panic("Qubit number out of range")
-	}
-	c.operations = append(c.operations, Operation{gate: toffoli, qubits: []int{control1, control2, target}})
 }
 
 // =============== Initialize Qubits ===============

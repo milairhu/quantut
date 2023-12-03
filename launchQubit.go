@@ -1,6 +1,7 @@
 package quantut
 
 import (
+	"fmt"
 	"quantut/utils"
 )
 
@@ -57,26 +58,36 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit) {
 				//If only one qubit is involved, apply the gate
 				qubitToVector := c.qubitsValues[numQubit].Vector()
 				var calc = utils.ComplexMatrixProduct(op.Gate().Effect(), qubitToVector)
-				/*
-					fmt.Println("Op : ", op.Gate().Effect())
-					fmt.Println("Value init : ", c.qubitsValues[numQubit])
-					fmt.Println("calc : ", calc)
-				*/
-				//fmt.Println("Value before ", op.Gate().Id(), " : ", c.qubitsValues[numQubit])
 				c.SetQubit(numQubit, calc[0][0], calc[1][0])
-				//fmt.Println("Value after ", op.gate.id, " : ", c.qubitsValues[numQubit])
 			} else {
+				// If more than one qubit is involved, qubit must be synchronized with the others
+				// Get the other qubits involved in the operation
+				othersQubits := make([]int, nbQubits-1)
+				for i := 0; i < nbQubits; i++ {
+					if op.Qubits()[i] != numQubit {
+						othersQubits[i] = op.Qubits()[i]
+					}
+				}
+				//Convention : control qubits are given first in the operation
+				//Case 1 : the qubit is a control qubit
+				if op.IsControlQubit(numQubit) {
+					//Qubit sends its value to the target qubit(s) //TODO : checker CSWAP, 2 cibles
+					for _, q := range othersQubits {
+						qubitChanMap[q] <- c.qubitsValues[numQubit]
+					}
+				} else { //Case 2 : the qubit is a target qubit
+					//Qubit waits for the control qubit(s) to send its value
+					receivedValues := make([]Qubit, op.gate.nbControlQubit)
+					for i, q := range othersQubits {
+						receivedValues[i] = <-qubitChanMap[q]
+					}
 
+					//Apply the gate
+					//TODO
+					fmt.Println("Qubit", numQubit, "received values", receivedValues)
+				}
 			}
 
 		}
 	}
-	//Test synchronisation
-	/* //Si besoin de recevoir un résultat
-	res := 0
-	if numQubit%2 == 0 {
-		res = 1
-	}
-	resChan <- fmt.Sprintf("%d,%d", numQubit, res)
-	*/
 }

@@ -28,3 +28,17 @@ func (o *Operation) IsQubitInOperation(numQubit int) bool {
 	}
 	return false
 }
+
+// Return true if the qubit is a control qubit for the operation
+// TODO tester
+func (o *Operation) IsControlQubit(numQubit int) bool {
+	if o.gate.NbControlQubit() == 0 {
+		return false
+	}
+	for i := 0; i < int(o.gate.NbControlQubit()); i++ {
+		if o.qubits[i] == numQubit {
+			return true
+		}
+	}
+	return false
+}

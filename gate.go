@@ -6,9 +6,10 @@ import "math"
 * We differenciate Gate and Operations the same way than Cirq
 **/
 type Gate struct {
-	id       string         //Type of the gate
-	nbQubits uint16         //Number of qubits involved
-	effect   [][]complex128 //Effect of the gate on the qubits
+	id             string         //Type of the gate
+	nbQubits       uint16         //Number of qubits involved
+	nbControlQubit uint16         //Number of control qubits
+	effect         [][]complex128 //Effect of the gate on the qubits
 }
 
 //Définition des portes (on ne peut pas utiliser const sur une structure composée)
@@ -21,7 +22,8 @@ var (
 
 	// Portes à 2 qubits
 	cnot = Gate{id: "CNOT",
-		nbQubits: 2,
+		nbQubits:       2,
+		nbControlQubit: 1,
 		effect: [][]complex128{
 			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
 			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0)},
@@ -30,7 +32,8 @@ var (
 		},
 	}
 	swap = Gate{id: "SWAP",
-		nbQubits: 2,
+		nbQubits:       2,
+		nbControlQubit: 0,
 		effect: [][]complex128{
 			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
 			{complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0)},
@@ -41,7 +44,8 @@ var (
 
 	// Portes à 3 qubits TODO
 	ccnot = Gate{id: "CCNOT",
-		nbQubits: 3,
+		nbQubits:       3,
+		nbControlQubit: 2,
 		effect: [][]complex128{
 			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
 			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
@@ -54,6 +58,7 @@ var (
 		},
 	}
 	cswap = Gate{id: "CSWAP", nbQubits: 3,
+		nbControlQubit: 1,
 		effect: [][]complex128{
 			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
 			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
@@ -87,4 +92,8 @@ func (g Gate) NbQubits() uint16 {
 
 func (g Gate) Effect() [][]complex128 {
 	return g.effect
+}
+
+func (g Gate) NbControlQubit() uint16 {
+	return g.nbControlQubit
 }
