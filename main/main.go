@@ -14,6 +14,14 @@ func main() {
 
 	circuit.Measure(0, 0) //on mesure le qubit 0 et on stocke le résultat dans le registre classique 0
 	circuit.Measure(1, 1) //on mesure le qubit 1 et on stocke le résultat dans le registre classique 1
+
+	circToCombine := quantut.NewQuantumCircuit(2) //on crée un circuit à 1 qubit
+	circToCombine.InitClassicalRegister(1)        //on crée un registre classique de 1 bit
+	circToCombine.H(1)                            //on applique une porte Hadamard sur le qubit 0
+	circToCombine.Measure(1, 0)                   //on mesure le qubit 0 et on stocke le résultat dans le registre classique 0
+
+	circuit = circuit.Compose(circToCombine) //on combine les deux circuits
+
 	simulator := quantut.NewSimulator(circuit, 1000)
 	res := simulator.Run()
 	fmt.Println(res)
