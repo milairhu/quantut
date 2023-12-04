@@ -2,7 +2,7 @@ package utils
 
 import "fmt"
 
-// TensorialProduct compute the tensorial product of a slice of qubits (ok)
+// TensorialProduct compute the tensorial product of a slice of qubits
 func TensorialProduct(qubits [][]complex128) []complex128 {
 	if len(qubits) == 0 {
 		panic("Tensorial product impossible : no qubits")

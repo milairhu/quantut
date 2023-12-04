@@ -52,6 +52,10 @@ func (c *QuantumCircuit) GlobalState() []complex128 {
 	return c.globalState
 }
 
+func (c *QuantumCircuit) ClassicalRegisterValue() []int {
+	return c.classicalRegister
+}
+
 // === Setters ===
 func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex128) {
 	if numQubit >= c.numQubits || numQubit < 0 {
@@ -95,4 +99,24 @@ func (c *QuantumCircuit) Qubits() [][]complex128 {
 		res[i] = c.qubitsValues[i].ToArrComplex128()
 	}
 	return res
+}
+
+// ===== Combine circuits =====
+// Add the operations of the circuit given in paramter to the current circuit
+// A tester
+func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
+
+	if c.numQubits < circuit.numQubits {
+		panic("The circuit to add has more qubits than the current circuit")
+	}
+	if len(c.classicalRegister) < len(circuit.classicalRegister) {
+		panic("The circuit to add has more bits in the classical register than the current circuit")
+	}
+
+	resCirc := NewQuantumCircuit(c.numQubits)                          //Create a new circuit with the same number of qubits as the current circuit
+	resCirc.operations = append(c.operations, c.Operations()...)       //Add the operations of the current circuit to the new circuit
+	resCirc.operations = append(c.operations, circuit.Operations()...) //Add the operations of the circuit to add to the new circuit
+
+	resCirc.InitClassicalRegister(uint8(len(c.classicalRegister))) //Init the classical register of the new circuit
+	return resCirc
 }
