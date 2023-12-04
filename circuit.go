@@ -2,6 +2,7 @@ package quantut
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/milairhu/quantut/utils"
 )
@@ -120,4 +121,58 @@ func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
 
 	resCirc.InitClassicalRegister(uint8(len(c.classicalRegister))) //Init the classical register of the new circuit
 	return resCirc
+}
+
+// === Create QASM file ===
+// Create the content of QASM file
+// WARNING : CSWAP is not supported by QASM
+func (c *QuantumCircuit) generateQASM() string {
+	var qasmContent string = "version 1.0\n\n"
+
+	//Number of qubits
+	qasmContent += fmt.Sprintf("qubits %d\n\n", c.numQubits)
+
+	//Operations
+	for _, op := range c.operations {
+		if op.Gate().Id() == "INIT" || op.Gate().Id() == "CSWAP" {
+			panic(fmt.Sprintf("Gate %s is not supported by QASM", op.Gate().Id()))
+		}
+		if len(op.Qubits()) == 1 {
+
+			qasmContent += fmt.Sprintf("%s q[%d]\n", op.Gate().Id(), op.Qubits()[0])
+
+		} else {
+			if op.Gate().Id() == "MEASURE" {
+				qasmContent += fmt.Sprintf("\nmeasure q[%d]\n", op.Qubits()[0])
+			} else {
+				if op.Gate().Id() == "CCNOT" {
+					qasmContent += "Toffoli "
+				} else {
+					qasmContent += fmt.Sprintf("%s ", op.Gate().Id())
+				}
+				for i := 0; i < len(op.Qubits())-1; i++ {
+					qasmContent += fmt.Sprintf("q[%d], ", op.Qubits()[i])
+				}
+				qasmContent += fmt.Sprintf("q[%d]\n", op.Qubits()[len(op.Qubits())-1])
+			}
+		}
+	}
+
+	return qasmContent
+
+}
+
+// Use previous function to write the ontent in a file
+func (c *QuantumCircuit) ToQASM(filename string) {
+	content := c.generateQASM()
+	file, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(content)
+	if err != nil {
+		panic(err)
+	}
 }
