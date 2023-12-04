@@ -2,7 +2,8 @@ package quantut
 
 import (
 	"fmt"
-	"quantut/utils"
+
+	"github.com/milairhu/quantut/utils"
 )
 
 type QuantumCircuit struct {

@@ -3,7 +3,8 @@ package quantut
 import (
 	"fmt"
 	"math"
-	"quantut/utils"
+
+	"github.com/milairhu/quantut/utils"
 )
 
 type Qubit [2]complex128 //Qubit is a slice of  complexes

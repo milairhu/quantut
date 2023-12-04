@@ -2,7 +2,8 @@ package quantut
 
 import (
 	"fmt"
-	"quantut/utils"
+
+	"github.com/milairhu/quantut/utils"
 )
 
 // =============== Add gates to the circuit ===============

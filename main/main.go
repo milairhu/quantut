@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"quantut"
+
+	"github.com/milairhu/quantut"
 )
 
 func main() {
