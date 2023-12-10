@@ -90,30 +90,11 @@ func (s *Simulator) Run() (res map[string]uint) {
 			wg.Add(1)
 
 			go func(i int) {
-				//Problème : toutes les go routines ne sont pas envoyées...
 				defer wg.Done()
 				s.Circuit().LaunchQubit(i, channelsMap[i])
 			}(i)
 		}
 		wg.Wait()
-		/*
-			//On récupère le résultat de chaque qubit
-			for i := 0; i < s.circuit.numQubits; i++ {
-				storeRes[i] = <-resChan //retourne un string "numQubit,valeur", ce qui nous permet de pouvoir ranger ces résultats par ordre alphabétique
-				<-resChan
-			}*/
-
-		//Si on enregistre les états finaux des qubits :
-		/*
-			//Sort storeRes
-			sort.Strings(storeRes)
-
-			var resShot string
-			for i := 0; i < s.circuit.numQubits; i++ {
-				storeRes[i] = strings.Split(storeRes[i], ",")[1]
-				resShot += storeRes[i]
-			}
-		*/
 
 		//Si on enregistre les états finaux des registres classiques :
 		var resShot string
