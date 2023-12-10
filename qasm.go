@@ -11,7 +11,7 @@ import (
 
 // Language found on https://www.quantum-inspire.com/kbase/cqasm/
 // WARNING : CSWAP is not supported by QASMv1
-func (c *QuantumCircuit) generateQASMv1() string {
+func (c *QuantumCircuit) generateCQASM() string {
 	var qasmContent string = "version 1.0\n\n"
 
 	//Number of qubits
@@ -94,8 +94,8 @@ func (c *QuantumCircuit) generateOPENQASM() string {
 func (c *QuantumCircuit) ToQASM(filename string, version string) {
 	var content string
 	switch version {
-	case "version 1.0":
-		content = c.generateQASMv1()
+	case "cQASM":
+		content = c.generateCQASM()
 	case "OPENQASM 2.0":
 		content = c.generateOPENQASM()
 	default:

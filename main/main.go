@@ -8,33 +8,24 @@ import (
 
 func main() {
 
-	circuit := quantut.NewQuantumCircuit(3) //création circuit à 2 qubits
-	circuit.InitClassicalRegister(3)        //on crée un registre classique de 2 bits
-	//Remarque : InitClassicalRegister et SetQubit sont appliqués directement, pas au lancement de la simulation
-	circuit.H(0) //on applique une porte Hadamard sur le qubit 0
-	circuit.CNOT(1, 2)
-	circuit.CCNOT(0, 1, 2)
-	circuit.CSWAP(2, 0, 1)
-	circuit.Measure(2, 2)
+	circuit := quantut.NewQuantumCircuit(2) //création circuit à 2 qubits
+	circuit.InitClassicalRegister(2)        //création registre classique à 1 bit
+	circuit.H(0)                            //porte de Hadamard sur le qubit 0
+	circuit.CNOT(0, 1)                      //porte CNOT sur les qubits 0 et 1
 
-	circToCombine := quantut.NewQuantumCircuit(2) //on crée un circuit à 1 qubit
-	circToCombine.InitClassicalRegister(2)        //on crée un registre classique de 1 bit
-	circToCombine.CNOT(0, 1)                      //on applique une porte CNOT sur le qubit 0
-	circToCombine.H(1)
-	circToCombine.X(1)
-	circToCombine.Y(1)
-	circToCombine.Z(1)
-	circToCombine.Measure(1, 1) //on mesure le qubit 0 et on stocke le résultat dans le registre classique 0
+	circuit2 := quantut.NewQuantumCircuit(2) //création circuit à 2 qubits
+	circuit2.InitClassicalRegister(2)        //création registre classique à 1 bit
+	circuit2.SWAP(0, 1)
+	circuit2.Measure(0, 0) //mesure du qubit 0 dans le registre classique 0
+	circuit2.Measure(1, 1)
 
-	circuit = circuit.Compose(circToCombine)    //on combine les deux circuits
-	circuit.Measure(0, 0)                       //on mesure le qubit 0 et on stocke le résultat dans le registre classique 0
-	circuit.Measure(1, 1)                       //on mesure le qubit 1 et on stocke le résultat dans le registre classique 1
-	circuit.Measure(2, 2)                       //on mesure le qubit 2 et on stocke le résultat dans le registre classique 2
-	circuit.ToQASM("test.qasm", "OPENQASM 2.0") //on écrit le circuit en QASM dans un fichier
+	circuit = circuit.Compose(circuit2) // composition des deux circuits
 
-	simulator := quantut.NewSimulator(circuit, 1000)
+	simulator := quantut.NewSimulator(circuit, 1000) //création du simulateur à 1000 itérations
 	res := simulator.Run()
-	fmt.Println(res)
+	fmt.Println(res) //affichage des résultats
+
+	circuit.ToQASM("exemple.qasm", "OPENQASM 2.0") //exportation du circuit en QASM
 
 	//Test CNOT et CSWAP
 	/*

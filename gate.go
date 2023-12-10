@@ -15,7 +15,8 @@ type Gate struct {
 //Définition des portes (on ne peut pas utiliser const sur une structure composée)
 var (
 	// Portes à 1 qubit
-	h = Gate{id: "H", nbQubits: 1, effect: [][]complex128{{complex(1/math.Sqrt(2), 0), complex(1/math.Sqrt(2), 0)}, {complex(1/math.Sqrt(2), 0), complex(-1/math.Sqrt(2), 0)}}}
+	h = Gate{id: "H", nbQubits: 1,
+		effect: [][]complex128{{complex(1/math.Sqrt(2), 0), complex(1/math.Sqrt(2), 0)}, {complex(1/math.Sqrt(2), 0), complex(-1/math.Sqrt(2), 0)}}}
 	x = Gate{id: "X", nbQubits: 1, effect: [][]complex128{{complex(0, 0), complex(1, 0)}, {complex(1, 0), complex(0, 0)}}}
 	y = Gate{id: "Y", nbQubits: 1, effect: [][]complex128{{complex(0, 0), complex(0, -1)}, {complex(0, 1), complex(0, 0)}}}
 	z = Gate{id: "Z", nbQubits: 1, effect: [][]complex128{{complex(1, 0), complex(0, 0)}, {complex(0, 0), complex(-1, 0)}}}
