@@ -13,7 +13,7 @@ func main() {
 	circuit.H(0)                            //porte de Hadamard sur le qubit 0
 	circuit.CNOT(0, 2)                      //porte CNOT sur les qubits 0 et 1
 	circuit.X(2)                            //porte X sur le qubit 2
-	circuit.CCNOT(1, 2, 3)                  //porte CCNOT sur les qubits 0, 1 et 2
+	circuit.CCNOT(0, 3, 2)                  //porte CCNOT sur les qubits 0, 1 et 2
 
 	circuit2 := quantut.NewQuantumCircuit(2) //création circuit à 2 qubits
 	circuit2.InitClassicalRegister(2)        //création registre classique à 1 bit
