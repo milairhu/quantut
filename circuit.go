@@ -141,17 +141,17 @@ func fillGapWithDash(lengthToReach, initialLength int) string {
 }
 
 func decideIfLinkNeeded(links []int, currQubit int) bool {
-	//Si qubit pas dans links, return false
-	var found bool
+	//On retourne true si des | doivent descendre du qubit
+
 	var existsLower bool
+	var existsHigherOrEqual bool
 	for _, qubit := range links {
-		if qubit == currQubit {
-			found = true
-		}
 		if qubit > currQubit {
 			existsLower = true
+		} else {
+			existsHigherOrEqual = true
 		}
-		if existsLower && found {
+		if existsLower && existsHigherOrEqual {
 			return true
 		}
 	}
@@ -203,7 +203,7 @@ func (c *QuantumCircuit) Display() {
 	const nbSpaceBetweenLines = 3
 	//We display the matrix
 	var str string
-	var lineLength int
+	var lineLength int = 5 + maxLength*len(matRes[0])
 	for indQubit := 0; indQubit < len(matRes); indQubit++ {
 
 		//First, display the qubit number
@@ -219,14 +219,13 @@ func (c *QuantumCircuit) Display() {
 			}
 
 		}
-		lineLength = len(str)
 		if indQubit != len(matRes)-1 {
 			for i := 0; i < nbSpaceBetweenLines; i++ {
 				str += "\n   | "
 				var numOp int
 				for indCol := 5; indCol < lineLength; indCol += maxLength {
-					tab := links[numOp]
-					if len(tab) > 0 && decideIfLinkNeeded(tab, indQubit) {
+					tab, ok := links[numOp]
+					if ok && decideIfLinkNeeded(tab, indQubit) {
 						str += "|" + fillGapWithSpace(maxLength, 1)
 					} else {
 						str += fillGapWithSpace(maxLength, 0)
