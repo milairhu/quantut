@@ -122,7 +122,8 @@ func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
 	return resCirc
 }
 
-// == Display circuit ==
+// == Display circuit == //
+
 func fillGapWithSpace(lengthToReach, initialLength int) string {
 	var str string
 	for i := initialLength; i < lengthToReach; i++ {
@@ -139,6 +140,24 @@ func fillGapWithDash(lengthToReach, initialLength int) string {
 	return str
 }
 
+func decideIfLinkNeeded(links []int, currQubit int) bool {
+	//Si qubit pas dans links, return false
+	var found bool
+	var existsLower bool
+	for _, qubit := range links {
+		if qubit == currQubit {
+			found = true
+		}
+		if qubit > currQubit {
+			existsLower = true
+		}
+		if existsLower && found {
+			return true
+		}
+	}
+	return false
+}
+
 func (c *QuantumCircuit) Display() {
 	//We need to spot the largest gate name
 	var maxLength int
@@ -151,7 +170,7 @@ func (c *QuantumCircuit) Display() {
 	//We save the indexes of the operations that necessitate links
 	links := make(map[int][]int)
 	for i, op := range c.operations {
-		if op.Gate().nbControlQubit > 0 {
+		if op.Gate().Id() != "MEASURE" && len(op.Qubits()) > 1 {
 			links[i] = op.Qubits()
 		}
 	}
@@ -180,7 +199,7 @@ func (c *QuantumCircuit) Display() {
 		}
 	}
 	fmt.Println(matRes)
-
+	fmt.Println(links)
 	const nbSpaceBetweenLines = 3
 	//We display the matrix
 	var str string
@@ -203,9 +222,16 @@ func (c *QuantumCircuit) Display() {
 		lineLength = len(str)
 		if indQubit != len(matRes)-1 {
 			for i := 0; i < nbSpaceBetweenLines; i++ {
-				str += "\n     "
+				str += "\n   | "
+				var numOp int
 				for indCol := 5; indCol < lineLength; indCol += maxLength {
-					str += "|" + fillGapWithSpace(maxLength, 1)
+					tab := links[numOp]
+					if len(tab) > 0 && decideIfLinkNeeded(tab, indQubit) {
+						str += "|" + fillGapWithSpace(maxLength, 1)
+					} else {
+						str += fillGapWithSpace(maxLength, 0)
+					}
+					numOp++
 				}
 
 			}
