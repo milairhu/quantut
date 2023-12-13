@@ -121,3 +121,76 @@ func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
 	resCirc.InitClassicalRegister(uint8(len(c.classicalRegister))) //Init the classical register of the new circuit
 	return resCirc
 }
+
+// == Display circuit ==
+func fillGapWithSpace(lengthToReach, initialLength int) string {
+	var str string
+	for i := initialLength; i < lengthToReach; i++ {
+		str += " "
+	}
+	return str
+}
+
+func fillGapWithDash(lengthToReach, initialLength int) string {
+	var str string
+	for i := initialLength; i < lengthToReach; i++ {
+		str += "-"
+	}
+	return str
+}
+func (c *QuantumCircuit) Display() {
+	//We need to spot the largest gate name
+	var maxLength int
+	for _, op := range c.operations {
+		if len(op.Gate().id) > maxLength {
+			maxLength = len(op.Gate().id)
+		}
+	}
+
+	mat1 := make([][]string, len(c.operations)+2)
+
+	//First, we wrte the number of the qubits
+	mat1[0] = make([]string, c.numQubits)
+	mat1[1] = make([]string, c.numQubits)
+	for i := 0; i < c.numQubits; i++ {
+		mat1[0][i] = fmt.Sprintf("q%d", i)
+		mat1[1][i] = "|"
+	}
+
+	for i := 0; i < len(c.operations); i++ {
+		op := c.operations[i]
+		mat1[i+2] = make([]string, c.numQubits)
+		for ind, qubit := range op.Qubits() {
+			if ind < int(op.Gate().nbControlQubit) {
+				mat1[i+2][qubit] = "@" + fillGapWithDash(maxLength, 1)
+			} else {
+				mat1[i+2][qubit] = op.Gate().id + fillGapWithDash(maxLength, len(op.Gate().id))
+			}
+		}
+		//Fill the rest of the matrix with '-'
+		for j := 0; j < c.numQubits; j++ {
+			if mat1[i][j] == "" {
+				mat1[i][j] = "-" + fillGapWithDash(maxLength, 1)
+			}
+		}
+	}
+
+	fmt.Println(mat1)
+	//We display the transposed matrix
+	matRes := make([][]string, len(mat1[0]))
+	for i := 0; i < len(mat1[0]); i++ {
+		matRes[i] = make([]string, len(mat1))
+		for j := 0; j < len(mat1); j++ {
+			matRes[i][j] = mat1[j][i]
+		}
+	}
+
+	//We display the matrix
+	for i := 0; i < len(matRes); i++ {
+		for j := 0; j < len(matRes[0]); j++ {
+			fmt.Printf("%s ", matRes[i][j])
+		}
+		fmt.Println()
+	}
+
+}

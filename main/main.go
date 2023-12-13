@@ -27,6 +27,9 @@ func main() {
 
 	circuit.ToQASM("exemple.qasm", "OPENQASM 2.0") //exportation du circuit en QASM
 
+	//Test de l'affichage
+	circuit.Display()
+
 	//Test CNOT et CSWAP
 	/*
 		circuit2 := quantut.NewQuantumCircuit(3)

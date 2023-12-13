@@ -1,8 +1,6 @@
 package quantut
 
 import (
-	"fmt"
-
 	"github.com/milairhu/quantut/utils"
 )
 
@@ -77,7 +75,7 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit) {
 					//Qubit sends its value to the target qubit(s) //TODO : checker CSWAP, 2 cibles
 					for _, q := range targetQubits {
 						qubitChanMap[q] <- c.qubitsValues[numQubit]
-						fmt.Println("Qubit", numQubit, "sent value to qubit", q)
+						//fmt.Println("Qubit", numQubit, "sent value to qubit", q)
 					}
 				} else { //Case 2 : the qubit is a target qubit
 					//TODO voir comment on fait pour réaliser le calcul quand on a plusieurs cible : on désigne un qubit qui fait le calcul et qui envoie le résultat aux autres ?
@@ -85,12 +83,12 @@ func (c *QuantumCircuit) LaunchQubit(numQubit int, channels []chan Qubit) {
 					receivedValues := make([]Qubit, op.gate.nbControlQubit)
 					for i, q := range controlQubits {
 						receivedValues[i] = <-qubitChanMap[q] //TODO vérifier qu'on n'a pas besoin de recevoir les valeurs dans l'ordre (ou de les reranger)
-						fmt.Println("Qubit", numQubit, "received value from qubit", q)
+						//fmt.Println("Qubit", numQubit, "received value from qubit", q)
 					}
 
 					//Apply the gate
 					//TODO
-					fmt.Println("Qubit", numQubit, "received values", receivedValues)
+					//fmt.Println("Qubit", numQubit, "received values", receivedValues)
 				}
 			}
 
