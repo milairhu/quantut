@@ -189,7 +189,6 @@ func (c *QuantumCircuit) Display() {
 		}
 	}
 
-	fmt.Println(mat1)
 	//We display the transposed matrix
 	matRes := make([][]string, len(mat1[0]))
 	for i := 0; i < len(mat1[0]); i++ {
@@ -198,8 +197,6 @@ func (c *QuantumCircuit) Display() {
 			matRes[i][j] = mat1[j][i]
 		}
 	}
-	fmt.Println(matRes)
-	fmt.Println(links)
 	const nbSpaceBetweenLines = 3
 	//We display the matrix
 	var str string
