@@ -138,6 +138,7 @@ func fillGapWithDash(lengthToReach, initialLength int) string {
 	}
 	return str
 }
+
 func (c *QuantumCircuit) Display() {
 	//We need to spot the largest gate name
 	var maxLength int
@@ -147,30 +148,16 @@ func (c *QuantumCircuit) Display() {
 		}
 	}
 
-	mat1 := make([][]string, len(c.operations)+2)
-
-	//First, we wrte the number of the qubits
-	mat1[0] = make([]string, c.numQubits)
-	mat1[1] = make([]string, c.numQubits)
-	for i := 0; i < c.numQubits; i++ {
-		mat1[0][i] = fmt.Sprintf("q%d", i)
-		mat1[1][i] = "|"
-	}
+	mat1 := make([][]string, len(c.operations))
 
 	for i := 0; i < len(c.operations); i++ {
 		op := c.operations[i]
-		mat1[i+2] = make([]string, c.numQubits)
+		mat1[i] = make([]string, c.numQubits)
 		for ind, qubit := range op.Qubits() {
 			if ind < int(op.Gate().nbControlQubit) {
-				mat1[i+2][qubit] = "@" + fillGapWithDash(maxLength, 1)
+				mat1[i][qubit] = "@"
 			} else {
-				mat1[i+2][qubit] = op.Gate().id + fillGapWithDash(maxLength, len(op.Gate().id))
-			}
-		}
-		//Fill the rest of the matrix with '-'
-		for j := 0; j < c.numQubits; j++ {
-			if mat1[i][j] == "" {
-				mat1[i][j] = "-" + fillGapWithDash(maxLength, 1)
+				mat1[i][qubit] = op.Gate().id
 			}
 		}
 	}
@@ -184,13 +171,32 @@ func (c *QuantumCircuit) Display() {
 			matRes[i][j] = mat1[j][i]
 		}
 	}
+	fmt.Println(matRes)
 
+	const nbSpaceBetweenLines = 3
 	//We display the matrix
-	for i := 0; i < len(matRes); i++ {
-		for j := 0; j < len(matRes[0]); j++ {
-			fmt.Printf("%s ", matRes[i][j])
+	var str string
+	for indQubit := 0; indQubit < len(matRes); indQubit++ {
+
+		//First, display the qubit number
+		str += fmt.Sprintf("q%d | ", indQubit)
+
+		//Display the operations applied on the qubit
+		for indOp, op := range matRes[indQubit] {
+			if op == "" {
+				str += fillGapWithDash(maxLength, 0)
+			} else {
+				str += matRes[indQubit][indOp]
+				str += fillGapWithDash(maxLength, len(matRes[indQubit][indOp]))
+			}
+
 		}
-		fmt.Println()
+		for i := 0; i < nbSpaceBetweenLines; i++ {
+			str += "\n"
+		}
+
 	}
+
+	fmt.Println(str)
 
 }
