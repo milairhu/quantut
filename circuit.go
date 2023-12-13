@@ -148,6 +148,14 @@ func (c *QuantumCircuit) Display() {
 		}
 	}
 
+	//We save the indexes of the operations that necessitate links
+	links := make(map[int][]int)
+	for i, op := range c.operations {
+		if op.Gate().nbControlQubit > 0 {
+			links[i] = op.Qubits()
+		}
+	}
+
 	mat1 := make([][]string, len(c.operations))
 
 	for i := 0; i < len(c.operations); i++ {
@@ -176,6 +184,7 @@ func (c *QuantumCircuit) Display() {
 	const nbSpaceBetweenLines = 3
 	//We display the matrix
 	var str string
+	var lineLength int
 	for indQubit := 0; indQubit < len(matRes); indQubit++ {
 
 		//First, display the qubit number
@@ -191,9 +200,17 @@ func (c *QuantumCircuit) Display() {
 			}
 
 		}
-		for i := 0; i < nbSpaceBetweenLines; i++ {
-			str += "\n"
+		lineLength = len(str)
+		if indQubit != len(matRes)-1 {
+			for i := 0; i < nbSpaceBetweenLines; i++ {
+				str += "\n     "
+				for indCol := 5; indCol < lineLength; indCol += maxLength {
+					str += "|" + fillGapWithSpace(maxLength, 1)
+				}
+
+			}
 		}
+		str += "\n"
 
 	}
 
