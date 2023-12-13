@@ -8,10 +8,12 @@ import (
 
 func main() {
 
-	circuit := quantut.NewQuantumCircuit(2) //création circuit à 2 qubits
+	circuit := quantut.NewQuantumCircuit(4) //création circuit à 2 qubits
 	circuit.InitClassicalRegister(2)        //création registre classique à 1 bit
 	circuit.H(0)                            //porte de Hadamard sur le qubit 0
-	circuit.CNOT(0, 1)                      //porte CNOT sur les qubits 0 et 1
+	circuit.CNOT(0, 2)                      //porte CNOT sur les qubits 0 et 1
+	circuit.X(2)                            //porte X sur le qubit 2
+	circuit.CCNOT(0, 3, 2)                  //porte CCNOT sur les qubits 0, 1 et 2
 
 	circuit2 := quantut.NewQuantumCircuit(2) //création circuit à 2 qubits
 	circuit2.InitClassicalRegister(2)        //création registre classique à 1 bit
@@ -26,6 +28,9 @@ func main() {
 	fmt.Println(res) //affichage des résultats
 
 	circuit.ToQASM("exemple.qasm", "OPENQASM 2.0") //exportation du circuit en QASM
+
+	//Test de l'affichage
+	circuit.Display()
 
 	//Test CNOT et CSWAP
 	/*
