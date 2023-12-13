@@ -67,6 +67,8 @@ func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex1
 	}
 
 	c.qubitsValues[numQubit].Init(comp1, comp2)
+	//Update global state
+
 }
 
 func (c *QuantumCircuit) SetGlobalState(newState []complex128) {
