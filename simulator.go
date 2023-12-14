@@ -42,11 +42,6 @@ func (s *Simulator) Run() (res map[string]uint) {
 	//result map
 	res = make(map[string]uint)
 
-	//Store initial values of the qubits and classical registers
-	initQubitsValues := make([]Qubit, s.circuit.numQubits)
-	for i := 0; i < s.circuit.numQubits; i++ {
-		initQubitsValues[i] = s.circuit.qubitsValues[i]
-	}
 	initClassicalRegister := make([]int, len(s.circuit.classicalRegister))
 	copy(initClassicalRegister, s.circuit.classicalRegister)
 	initGlobalState := make([]complex128, len(s.circuit.globalState))
@@ -68,11 +63,6 @@ func (s *Simulator) Run() (res map[string]uint) {
 			res[resShot] = 1
 		} else {
 			res[resShot]++
-		}
-
-		//On remet les qubits à leur état initial
-		for i := 0; i < s.circuit.numQubits; i++ {
-			s.circuit.qubitsValues[i] = initQubitsValues[i]
 		}
 		//On remet le registre classique à son état initial
 		for i := 0; i < len(s.circuit.classicalRegister); i++ {

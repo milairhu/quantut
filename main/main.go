@@ -12,43 +12,17 @@ func main() {
 	circuit.InitClassicalRegister(2)        //création registre classique à 1 bit
 	circuit.H(0)                            //porte de Hadamard sur le qubit 0
 	circuit.CNOT(0, 1)                      //porte CNOT sur les qubits 0 et 1
+	circuit.Measure(0, 0)                   //mesure du qubit 0 dans le registre classique 0
+	circuit.Measure(1, 1)                   //mesure du qubit 1 dans le registre classique 1
 
-	circuit2 := quantut.NewQuantumCircuit(2) //création circuit à 2 qubits
-	circuit2.InitClassicalRegister(2)        //création registre classique à 1 bit
-	circuit2.SWAP(0, 1)
-	circuit2.Measure(0, 0) //mesure du qubit 0 dans le registre classique 0
-	circuit2.Measure(1, 1)
+	sim := quantut.NewSimulator(circuit, 1000) //création du simulateur
+	res := sim.Run()                           //lancement de la simulation
+	fmt.Println(res)                           //affichage des résultats
 
-	circuit = circuit.Compose(circuit2) // composition des deux circuits
-
-	simulator := quantut.NewSimulator(circuit, 1000) //création du simulateur à 1000 itérations
-	res := simulator.Run()
-	fmt.Println(res) //affichage des résultats
-
-	circuit.ToQASM("exemple.qasm", "OPENQASM 2.0") //exportation du circuit en QASM
-
-	//Test CNOT et CSWAP
-	/*
-		circuit2 := quantut.NewQuantumCircuit(3)
-		circuit2.InitClassicalRegister(1)
-		circuit2.H(0)
-		circuit2.H(0)
-		circuit2.CNOT(1, 2)
-		circuit2.H(0)
-		circuit2.H(0)
-		circuit2.CSWAP(0, 1, 2)
-		simulator2 := quantut.NewSimulator(circuit2, 1)
-		res2 := simulator2.Run()
-		fmt.Println(res2)
-	*/
-
-	/*
-		// Test de la fonction tensorialProduct
-		circ2 := quantut.NewQuantumCircuit(3)
-		circ2.SetQubit(0, complex(1/math.Sqrt(2), 0), complex(1/math.Sqrt(2), 0))
-		circ2.SetQubit(2, 0, 1)
-		test := utils.TensorialProduct(circ2.Qubits())
-		fmt.Println(test)
-	*/
-
+	//Test = sur matrice
+	test := []complex128{complex(1, 0), complex(0, 0), complex(0, 0), complex(1, 0)}
+	test2 := []complex128{complex(14444, 0), complex(0, 12), complex(0, 0), complex(0, 114)}
+	test2 = test
+	fmt.Println(test)
+	fmt.Println(test2)
 }
