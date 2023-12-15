@@ -126,3 +126,14 @@ func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
 	resCirc.InitClassicalRegister(uint8(len(c.classicalRegister))) //Init the classical register of the new circuit
 	return resCirc
 }
+
+// ===== Display general state =====
+func (c *QuantumCircuit) DisplayGlobalState() {
+	var str string
+	for i := 0; i < len(c.globalState); i++ {
+		if c.globalState[i] != 0 {
+			str += fmt.Sprintf("%f|%s> + ", c.globalState[i], convertIndToBinary(i, c.numQubits))
+		}
+	}
+	fmt.Println(str[:len(str)-3])
+}

@@ -35,7 +35,13 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 	random := rand.Float64() // generate a random number between 0 and 1
 
 	var resMeasure int
-	var proba0 float64 = cmplx.Abs(c.globalState[qubit]) * cmplx.Abs(c.globalState[qubit]) //Probability to get 0
+	var proba0 float64
+	for i := 0; i < len(c.globalState); i++ {
+		binary := convertIndToBinary(i, c.numQubits)
+		if binary[qubit] == '0' {
+			proba0 += cmplx.Abs(c.globalState[i]) * cmplx.Abs(c.globalState[i])
+		}
+	}
 	//fmt.Println("Probability to get 0 : ", proba0)
 	if random <= proba0 { // Compare to the probability of the qubit to be 0
 		c.classicalRegister[register] = 0
@@ -47,7 +53,6 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 		resMeasure = 1
 	}
 
-	//TODO : projeter en passant tous les états à la valeur mesurée pour le qubit mesuré
 	newStateMap := make(map[string]complex128)
 	for i := 0; i < len(c.globalState); i++ {
 		newStateMap[convertIndToBinary(i, c.numQubits)] = 0
@@ -65,13 +70,23 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 		if binary[qubit] == r {
 			//Si le qubit mesuré correspond, on change rien
 			newStateMap[binary] += c.globalState[i]
-		} else {
-			//Sinon, on ajoute la valeur de l'état à l'état correspondant
-			var newBinary string
-			newBinary = binary[:qubit] + string(r) + binary[qubit+1:] //Todo : vérifier la conversion
-			newStateMap[newBinary] += c.globalState[i]
 		}
 	}
+	//On a projetté les états sur le résultat de la mesure, il faut normaliser
+	//On calcule la norme
+	var norm complex128
+	for _, val := range newStateMap {
+		norm += val * val
+	}
+	norm = cmplx.Sqrt(norm)
+
+	//fmt.Println("Norme before normalisation : ", norm)
+	//On normalise
+	for key, val := range newStateMap {
+		newStateMap[key] = val / norm
+	}
+	//fmt.Println("New state map : ", newStateMap)
+
 	//On remplace l'ancien état par le nouveau
 	for i := 0; i < len(c.globalState); i++ {
 		c.globalState[i] = newStateMap[convertIndToBinary(i, c.numQubits)]

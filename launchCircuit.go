@@ -1,7 +1,5 @@
 package quantut
 
-import "fmt"
-
 // Simulate a circuit
 func (c *QuantumCircuit) LaunchCircuit() {
 
@@ -78,6 +76,7 @@ func (c *QuantumCircuit) LaunchCircuit() {
 				panic("Unknown gate" + op.Gate().Id())
 			}
 		}
-		fmt.Println("Global state after ", op.Gate().Id(), " : ", c.globalState)
+		//fmt.Print("Global state after ", op.Gate().Id(), " : ")
+		//c.DisplayGlobalState()
 	}
 }
