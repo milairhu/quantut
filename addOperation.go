@@ -1,11 +1,5 @@
 package quantut
 
-import (
-	"fmt"
-
-	"github.com/milairhu/quantut/utils"
-)
-
 // =============== Add gates to the circuit ===============
 // Hadmard
 func (c *QuantumCircuit) H(numQubit int) {
@@ -71,17 +65,4 @@ func (c *QuantumCircuit) CSWAP(control int, target1 int, target2 int) {
 		panic("Qubit number out of range")
 	}
 	c.operations = append(c.operations, Operation{gate: cswap, qubits: []int{control, target1, target2}})
-}
-
-// =============== Initialize Qubits ===============
-func (c *QuantumCircuit) InitializeQubit(numQubit int, comp1 complex128, comp2 complex128) {
-	if numQubit >= c.numQubits || numQubit < 0 {
-		panic("Qubit number out of range")
-	}
-	if !utils.IsNormalized(comp1, comp2) {
-		panic(fmt.Sprintf("Qubit value must be normalized : %f^2+%f^2 = %f", comp1, comp2, comp1*comp1+comp2*comp2))
-	}
-
-	c.operations = append(c.operations, Operation{gate: initialization, qubits: []int{numQubit}, options: []complex128{comp1, comp2}})
-
 }

@@ -45,7 +45,6 @@ func xeffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 }
 
 // Gate Y
-// Todo : vérifier que c'est bien ça
 func yeffect(targetQubit int, generalState []complex128, nbQubit int) []complex128 {
 	if targetQubit >= nbQubit {
 		panic("Target qubit is not in the circuit")
@@ -75,7 +74,7 @@ func yeffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 	return res
 }
 
-// Todo : vérifier que c'est bien ça
+// Gate Z
 func zeffect(targetQubit int, generalState []complex128, nbQubit int) []complex128 {
 	if targetQubit >= nbQubit {
 		panic("Target qubit is not in the circuit")

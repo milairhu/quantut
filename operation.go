@@ -3,7 +3,7 @@ package quantut
 type Operation struct {
 	gate    Gate         //Gate used
 	qubits  []int        //Index of Qubits involved : first is the control, second is the target
-	options []complex128 //Options of the gate for Initialization
+	options []complex128 //Options of the gate that can be used later for Initialization
 }
 
 // Getters

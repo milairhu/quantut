@@ -8,7 +8,7 @@ func (c *QuantumCircuit) LaunchCircuit() {
 			panic("Operation is applied on no qubit")
 		}
 
-		// Particular cases : measure and initialization
+		// Particular cases : measure
 		switch op.Gate().Id() {
 		case "MEASURE":
 			if len(op.Qubits()) != 2 {
@@ -17,16 +17,8 @@ func (c *QuantumCircuit) LaunchCircuit() {
 			//Measure the qubit in the classical register
 			measureEffect(c, op.Qubits()[0], op.Qubits()[1])
 
-		case "INIT":
-			if len(op.Qubits()) != 1 {
-				panic("Initialization operation must have 1 qubit")
-			}
-			if len(op.Options()) != 2 {
-				panic("Initialization operation must have 2 values for the qubit")
-			}
-
 		default:
-			//For any other operation than measure and initialization
+			//For any other operation than measure
 			switch op.Gate().Id() {
 			case "X":
 				c.globalState = xeffect(op.Qubits()[0], c.globalState, c.NumQubits())

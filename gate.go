@@ -75,8 +75,6 @@ var (
 	//Measure (cas particulier)
 	measure = Gate{id: "MEASURE", nbQubits: 2} //Cas particulier : prend 1 qubit et 1 bit de registre classique
 
-	//Initialisation (cas particulier)
-	initialization = Gate{id: "INIT", nbQubits: 1}
 )
 
 //Méthods
