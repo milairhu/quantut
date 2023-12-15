@@ -163,7 +163,7 @@ func decideIfLinkNeeded(links []int, currQubit int) bool {
 	return false
 }
 
-func (c *QuantumCircuit) Display() {
+func (c *QuantumCircuit) Draw() {
 	//We need to spot the largest gate name
 	var maxLength int
 	for _, op := range c.operations {
