@@ -15,10 +15,16 @@ func main() {
 	circuit.CCNOT(0, 2, 1)
 	circuit.SWAP(0, 1)
 	circuit.CSWAP(0, 1, 2)
+
+	circ2 := quantut.NewQuantumCircuit(2)
+	circ2.X(0)
+	circ2.H(1)
+	circ2.CNOT(1, 0)
+
+	circuit = circuit.Compose(circ2)
+
 	circuit.Y(1)
 	circuit.Z(2)
-	circuit.X(0)
-	circuit.H(2)
 	circuit.Measure(0, 0)
 	circuit.Measure(1, 1)
 	circuit.Measure(2, 2)

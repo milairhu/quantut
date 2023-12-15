@@ -124,6 +124,7 @@ func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
 	resCirc.operations = append(c.operations, circuit.Operations()...) //Add the operations of the circuit to add to the new circuit
 
 	resCirc.InitClassicalRegister(uint8(len(c.classicalRegister))) //Init the classical register of the new circuit
+
 	return resCirc
 }
 
