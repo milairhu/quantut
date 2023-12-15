@@ -20,7 +20,6 @@ func main() {
 	res := sim.Run()                           //lancement de la simulation
 	fmt.Println(res)                           //affichage des résultats
 
-	circuit.Display()
+	circuit.Draw()
 	circuit.ToQASM("test.qasm", "OPENQASM 2.0")
-
 }

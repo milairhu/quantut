@@ -20,7 +20,7 @@ func (c *QuantumCircuit) generateCQASM() string {
 	//Operations
 	for _, op := range c.operations {
 		if op.Gate().Id() == "INIT" || op.Gate().Id() == "CSWAP" {
-			panic(fmt.Sprintf("Gate %s is not supported by QASM", op.Gate().Id()))
+			panic(fmt.Sprintf("Gate %s is not supported by cQASM", op.Gate().Id()))
 		}
 		if len(op.Qubits()) == 1 {
 
@@ -52,7 +52,7 @@ func (c *QuantumCircuit) generateOPENQASM() string {
 	var qasmContent string = "OPENQASM 2.0;\ninclude \"qelib1.inc\";\n\n"
 
 	//Number of qubits
-	qasmContent += fmt.Sprintf("qreg q[%d];\n\n", c.numQubits)
+	qasmContent += fmt.Sprintf("qreg q[%d];\n\n", c.NumQubits())
 
 	//Classical register
 	qasmContent += fmt.Sprintf("creg c[%d];\n\n", c.NbClassicalBits())
