@@ -15,6 +15,9 @@ type QuantumCircuit struct {
 }
 
 func NewQuantumCircuit(numQubits int) *QuantumCircuit {
+	if numQubits < 1 {
+		panic("Number of qubits must be greater than 0")
+	}
 	o := make([]Operation, 0)
 	qv := make([]Qubit, numQubits)
 	//Init qubits values to 0
@@ -23,7 +26,7 @@ func NewQuantumCircuit(numQubits int) *QuantumCircuit {
 	}
 	r := make([]int, 0)
 	var nbComposante = 2
-	for i := 0; i < numQubits; i++ {
+	for i := 1; i < numQubits; i++ {
 		nbComposante *= 2
 	}
 	gs := make([]complex128, nbComposante)
@@ -67,6 +70,8 @@ func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex1
 	}
 
 	c.qubitsValues[numQubit].Init(comp1, comp2)
+	//Update global state
+
 }
 
 func (c *QuantumCircuit) SetGlobalState(newState []complex128) {
@@ -238,4 +243,15 @@ func (c *QuantumCircuit) Display() {
 
 	fmt.Println(str)
 
+}
+
+// ===== Display general state =====
+func (c *QuantumCircuit) DisplayGlobalState() {
+	var str string
+	for i := 0; i < len(c.globalState); i++ {
+		if c.globalState[i] != 0 {
+			str += fmt.Sprintf("%f|%s> + ", c.globalState[i], convertIndToBinary(i, c.numQubits))
+		}
+	}
+	fmt.Println(str[:len(str)-3])
 }
