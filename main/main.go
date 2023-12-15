@@ -9,6 +9,7 @@ import (
 func main() {
 
 	circuit := quantut.NewQuantumCircuit(4) //création circuit à 2 qubits
+	circuit := quantut.NewQuantumCircuit(4) //création circuit à 2 qubits
 	circuit.InitClassicalRegister(2)        //création registre classique à 1 bit
 	circuit.H(0)                            //porte de Hadamard sur le qubit 0
 	circuit.CNOT(0, 1)                      //porte CNOT sur les qubits 0 et 1
