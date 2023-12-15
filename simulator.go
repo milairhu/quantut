@@ -64,14 +64,17 @@ func (s *Simulator) Run() (res map[string]uint) {
 		} else {
 			res[resShot]++
 		}
-		//On remet le registre classique à son état initial
-		for i := 0; i < len(s.circuit.classicalRegister); i++ {
-			s.circuit.classicalRegister[i] = initClassicalRegister[i]
+		if numShot < int(s.shots)-1 {
+			//On remet le registre classique à son état initial
+			for i := 0; i < len(s.circuit.classicalRegister); i++ {
+				s.circuit.classicalRegister[i] = initClassicalRegister[i]
+			}
+			//On remet l'état général à son état initial
+			for i := 0; i < len(s.circuit.globalState); i++ {
+				s.circuit.globalState[i] = initGlobalState[i]
+			}
 		}
-		//On remet l'état général à son état initial
-		for i := 0; i < len(s.circuit.globalState); i++ {
-			s.circuit.globalState[i] = initGlobalState[i]
-		}
+
 	}
 	return res
 }
