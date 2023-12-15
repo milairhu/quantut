@@ -30,7 +30,6 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 		panic(fmt.Sprintf("Register number out of range : %d", register))
 	}
 
-	//fmt.Println("Qubit to measure ", qubit, ":", c.qubitsValues[qubit].Vector())
 	rand.Seed(time.Now().UnixNano())
 	random := rand.Float64() // generate a random number between 0 and 1
 
@@ -42,14 +41,11 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 			proba0 += cmplx.Abs(c.globalState[i]) * cmplx.Abs(c.globalState[i])
 		}
 	}
-	//fmt.Println("Probability to get 0 : ", proba0)
 	if random <= proba0 { // Compare to the probability of the qubit to be 0
 		c.classicalRegister[register] = 0
 		resMeasure = 0
-		//fmt.Println("Result of the measure : 0")
 	} else {
 		c.classicalRegister[register] = 1
-		//fmt.Println("Result of the measure : 1")
 		resMeasure = 1
 	}
 
@@ -80,12 +76,10 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 	}
 	norm = cmplx.Sqrt(norm)
 
-	//fmt.Println("Norme before normalisation : ", norm)
 	//On normalise
 	for key, val := range newStateMap {
 		newStateMap[key] = val / norm
 	}
-	//fmt.Println("New state map : ", newStateMap)
 
 	//On remplace l'ancien état par le nouveau
 	for i := 0; i < len(c.globalState); i++ {

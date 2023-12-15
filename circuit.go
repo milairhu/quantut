@@ -2,14 +2,11 @@ package quantut
 
 import (
 	"fmt"
-
-	"github.com/milairhu/quantut/utils"
 )
 
 type QuantumCircuit struct {
 	numQubits         int          //Number of qubits involved
 	operations        []Operation  //Operations to apply on the circuit
-	qubitsValues      []Qubit      //Values of the qubits
 	classicalRegister []int        //Values of the classical register
 	globalState       []complex128 //Global state of the circuit. Represente the tensorial product of all qubits
 }
@@ -19,11 +16,6 @@ func NewQuantumCircuit(numQubits int) *QuantumCircuit {
 		panic("Number of qubits must be greater than 0")
 	}
 	o := make([]Operation, 0)
-	qv := make([]Qubit, numQubits)
-	//Init qubits values to 0
-	for i := 0; i < numQubits; i++ {
-		qv[i].Init(1, 0)
-	}
 	r := make([]int, 0)
 	var nbComposante = 2
 	for i := 1; i < numQubits; i++ {
@@ -32,7 +24,7 @@ func NewQuantumCircuit(numQubits int) *QuantumCircuit {
 	gs := make([]complex128, nbComposante)
 	//Global state is initialized to 0...0
 	gs[0] = 1
-	return &QuantumCircuit{numQubits: numQubits, operations: o, qubitsValues: qv, classicalRegister: r, globalState: gs}
+	return &QuantumCircuit{numQubits: numQubits, operations: o, classicalRegister: r, globalState: gs}
 }
 
 // ===== Getters =====
@@ -42,10 +34,6 @@ func (c *QuantumCircuit) NumQubits() int {
 
 func (c *QuantumCircuit) Operations() []Operation {
 	return c.operations
-}
-
-func (c *QuantumCircuit) QubitsValues() []Qubit {
-	return c.qubitsValues
 }
 
 func (c *QuantumCircuit) ClassicalRegister() []int {
@@ -61,18 +49,6 @@ func (c *QuantumCircuit) NbClassicalBits() int {
 }
 
 // === Setters ===
-func (c *QuantumCircuit) SetQubit(numQubit int, comp1 complex128, comp2 complex128) {
-	if numQubit >= c.numQubits || numQubit < 0 {
-		panic(fmt.Sprintf("Qubit number out of range : %d", numQubit))
-	}
-	if !utils.IsNormalized(comp1, comp2) {
-		panic(fmt.Sprintf("Qubit value must be normalized : %f^2+%f^2 = %f", comp1, comp2, comp1*comp1+comp2*comp2))
-	}
-
-	c.qubitsValues[numQubit].Init(comp1, comp2)
-	//Update global state
-
-}
 
 func (c *QuantumCircuit) SetGlobalState(newState []complex128) {
 	if len(newState) != len(c.globalState) {
@@ -99,13 +75,6 @@ func (c *QuantumCircuit) SetClassicalRegister(numRegister int, value int) {
 }
 
 // Return an array of all qubit values
-func (c *QuantumCircuit) Qubits() [][]complex128 {
-	res := make([][]complex128, c.numQubits)
-	for i := 0; i < c.numQubits; i++ {
-		res[i] = c.qubitsValues[i].ToArrComplex128()
-	}
-	return res
-}
 
 // ===== Combine circuits =====
 // Add the operations of the circuit given in paramter to the current circuit

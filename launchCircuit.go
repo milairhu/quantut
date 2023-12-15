@@ -2,31 +2,6 @@ package quantut
 
 // Simulate a circuit
 func (c *QuantumCircuit) LaunchCircuit() {
-
-	/*var test []complex128 = []complex128{complex(1, 0), complex(0, 1), complex(0, 0), complex(0, 0)}
-	fmt.Println(test)
-	fmt.Println("X : ", xeffect(1, test, 2))
-	fmt.Println("Y : ", yeffect(1, test, 2))
-	fmt.Println("Z : ", zeffect(1, test, 2))
-	fmt.Println("H : ", heffect(1, test, 2))
-
-	fmt.Println("CNOT : ", cnoteffect(0, 1, test, 2))
-	fmt.Println("CNOT : ", cnoteffect(1, 0, test, 2))
-
-	fmt.Println("SWAP : ", swapeffect(0, 1, test, 2))
-	fmt.Println("SWAP : ", swapeffect(1, 0, test, 2))
-
-	test2 := []complex128{complex(1, 0), complex(0, 0), complex(0, 0), complex(1, 0),
-		complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0)}
-
-	fmt.Println("CCNOT : ", ccnoteffect(0, 1, 2, test2, 3))
-	fmt.Println("CCNOT : ", ccnoteffect(1, 0, 2, test2, 3))
-	fmt.Println("CCNOT : ", ccnoteffect(0, 2, 1, test2, 3))
-
-	fmt.Println("CSWAP : ", cswapeffect(0, 1, 2, test2, 3))
-	fmt.Println("CSWAP : ", cswapeffect(1, 0, 2, test2, 3))
-	fmt.Println("CSWAP : ", cswapeffect(0, 2, 1, test2, 3))
-	*/
 	//Apply operations
 	for _, op := range c.operations {
 		if len(c.operations) == 0 {
@@ -49,8 +24,6 @@ func (c *QuantumCircuit) LaunchCircuit() {
 			if len(op.Options()) != 2 {
 				panic("Initialization operation must have 2 values for the qubit")
 			}
-			//Initialize the qubit
-			c.SetQubit(op.Qubits()[0], op.Options()[0], op.Options()[1])
 
 		default:
 			//For any other operation than measure and initialization
@@ -76,7 +49,5 @@ func (c *QuantumCircuit) LaunchCircuit() {
 				panic("Unknown gate" + op.Gate().Id())
 			}
 		}
-		//fmt.Print("Global state after ", op.Gate().Id(), " : ")
-		//c.DisplayGlobalState()
 	}
 }
