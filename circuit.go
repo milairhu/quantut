@@ -15,6 +15,9 @@ type QuantumCircuit struct {
 }
 
 func NewQuantumCircuit(numQubits int) *QuantumCircuit {
+	if numQubits < 1 {
+		panic("Number of qubits must be greater than 0")
+	}
 	o := make([]Operation, 0)
 	qv := make([]Qubit, numQubits)
 	//Init qubits values to 0
@@ -23,7 +26,7 @@ func NewQuantumCircuit(numQubits int) *QuantumCircuit {
 	}
 	r := make([]int, 0)
 	var nbComposante = 2
-	for i := 0; i < numQubits; i++ {
+	for i := 1; i < numQubits; i++ {
 		nbComposante *= 2
 	}
 	gs := make([]complex128, nbComposante)
