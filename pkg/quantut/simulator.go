@@ -48,16 +48,16 @@ func (s *Simulator) Run() (res map[string]uint) {
 	copy(initGlobalState, s.circuit.globalState)
 
 	for numShot := 0; numShot < int(s.shots); numShot++ {
-		//On simule un shot
+		// Simulation of the circuit
 
 		s.Circuit().LaunchCircuit()
 
-		// on enregistre les états finaux des registres classiques :
+		// record the final state of the classical registers
 		var resShot string
 		for i := len(s.circuit.classicalRegister) - 1; i >= 0; i-- {
 			resShot += fmt.Sprintf("%d", s.circuit.classicalRegister[i])
 		}
-		//on stocke le résultat dans le map
+		// Record the result in the map
 		_, exists := res[resShot]
 		if !exists {
 			res[resShot] = 1
@@ -65,11 +65,11 @@ func (s *Simulator) Run() (res map[string]uint) {
 			res[resShot]++
 		}
 		if numShot < int(s.shots)-1 {
-			//On remet le registre classique à son état initial
+			// Reinitialize the classical register
 			for i := 0; i < len(s.circuit.classicalRegister); i++ {
 				s.circuit.classicalRegister[i] = initClassicalRegister[i]
 			}
-			//On remet l'état général à son état initial
+			// Reinitialize the global state
 			for i := 0; i < len(s.circuit.globalState); i++ {
 				s.circuit.globalState[i] = initGlobalState[i]
 			}

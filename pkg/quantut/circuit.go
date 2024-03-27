@@ -78,7 +78,6 @@ func (c *QuantumCircuit) SetClassicalRegister(numRegister int, value int) {
 
 // ===== Combine circuits =====
 // Add the operations of the circuit given in paramter to the current circuit
-// A tester
 func (c *QuantumCircuit) Compose(circuit *QuantumCircuit) *QuantumCircuit {
 
 	if c.numQubits < circuit.numQubits {
@@ -116,7 +115,7 @@ func fillGapWithDash(lengthToReach, initialLength int) string {
 }
 
 func decideIfLinkNeeded(links []int, currQubit int) bool {
-	//On retourne true si des | doivent descendre du qubit
+	//eturn true if some '|' symbols shall drop down under the current qubit
 
 	var existsLower bool
 	var existsHigherOrEqual bool
@@ -164,7 +163,7 @@ func (c *QuantumCircuit) Draw() {
 		}
 	}
 
-	//We display the transposed matrix
+	// display the transposed matrix
 	matRes := make([][]string, len(mat1[0]))
 	for i := 0; i < len(mat1[0]); i++ {
 		matRes[i] = make([]string, len(mat1))
@@ -173,7 +172,7 @@ func (c *QuantumCircuit) Draw() {
 		}
 	}
 	const nbSpaceBetweenLines = 3
-	//We display the matrix
+	// display the matrix
 	var str string
 	var lineLength int = 5 + maxLength*len(matRes[0])
 	for indQubit := 0; indQubit < len(matRes); indQubit++ {

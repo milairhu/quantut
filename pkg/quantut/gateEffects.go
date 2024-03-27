@@ -66,7 +66,7 @@ func yeffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 		}
 
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
@@ -94,7 +94,7 @@ func zeffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 		}
 
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
@@ -126,7 +126,7 @@ func heffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 			stateMap[binary0] += generalState[i] * complex(1/math.Sqrt(2), 0)
 		}
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
@@ -135,7 +135,6 @@ func heffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 }
 
 // =========== 2 QUBIT GATES ===========
-// Les 2 semblent ok
 
 // Gate CNOT
 func cnoteffect(controlQubit int, targetQubit int, generalState []complex128, nbQubit int) []complex128 {
@@ -158,7 +157,7 @@ func cnoteffect(controlQubit int, targetQubit int, generalState []complex128, nb
 		binary := convertIndToBinary(i, nbQubit)
 		//Gate effect
 		if binary[controlQubit] == '0' {
-			// dont modify the state
+			// don't' modify the state
 			stateMap[binary] += generalState[i]
 		} else {
 			// if control qubit is 1, apply X gate on target qubit
@@ -171,7 +170,7 @@ func cnoteffect(controlQubit int, targetQubit int, generalState []complex128, nb
 		}
 
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
@@ -216,7 +215,7 @@ func swapeffect(targetQubit1 int, targetQubit2 int, generalState []complex128, n
 		}
 		stateMap[binary] += generalState[i]
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
@@ -263,7 +262,7 @@ func ccnoteffect(controlQubit1 int, controlQubit2 int, targetQubit int, generalS
 		}
 
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
@@ -294,7 +293,7 @@ func cswapeffect(controlQubit int, targetQubit1 int, targetQubit2 int, generalSt
 		binary := convertIndToBinary(i, nbQubit)
 		//Gate effect
 		if binary[controlQubit] == '0' {
-			// dont modify the state
+			// don't modify the state
 			stateMap[binary] += generalState[i]
 		} else {
 			var newValTarget1, newValTarget2 string
@@ -316,7 +315,7 @@ func cswapeffect(controlQubit int, targetQubit1 int, targetQubit2 int, generalSt
 			stateMap[binary] += generalState[i]
 		}
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}

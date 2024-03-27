@@ -77,7 +77,7 @@ var (
 
 )
 
-//Méthods
+//Methods
 
 //Getters
 func (g Gate) Id() string {
