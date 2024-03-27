@@ -12,16 +12,16 @@ type Gate struct {
 	effect         [][]complex128 //Effect of the gate on the qubits
 }
 
-//Définition des portes (on ne peut pas utiliser const sur une structure composée)
+// Definitio of the gates (we can't use 'const' on a composed structure)
 var (
-	// Portes à 1 qubit
+	// 1 qubit gates
 	h = Gate{id: "H", nbQubits: 1,
 		effect: [][]complex128{{complex(1/math.Sqrt(2), 0), complex(1/math.Sqrt(2), 0)}, {complex(1/math.Sqrt(2), 0), complex(-1/math.Sqrt(2), 0)}}}
 	x = Gate{id: "X", nbQubits: 1, effect: [][]complex128{{complex(0, 0), complex(1, 0)}, {complex(1, 0), complex(0, 0)}}}
 	y = Gate{id: "Y", nbQubits: 1, effect: [][]complex128{{complex(0, 0), complex(0, -1)}, {complex(0, 1), complex(0, 0)}}}
 	z = Gate{id: "Z", nbQubits: 1, effect: [][]complex128{{complex(1, 0), complex(0, 0)}, {complex(0, 0), complex(-1, 0)}}}
 
-	// Portes à 2 qubits
+	// 2 qubits gates
 	cnot = Gate{id: "CNOT",
 		nbQubits:       2,
 		nbControlQubit: 1,
@@ -43,7 +43,7 @@ var (
 		},
 	}
 
-	// Portes à 3 qubits
+	// 3 qubits gates
 	ccnot = Gate{id: "CCNOT",
 		nbQubits:       3,
 		nbControlQubit: 2,
@@ -72,8 +72,8 @@ var (
 		},
 	}
 
-	//Measure (cas particulier)
-	measure = Gate{id: "MEASURE", nbQubits: 2} //Cas particulier : prend 1 qubit et 1 bit de registre classique
+	// Edge case of MEASURE
+	measure = Gate{id: "MEASURE", nbQubits: 2} //consume 1 qubit and 1 bit from the classical register
 
 )
 

@@ -62,26 +62,26 @@ func measureEffect(c *QuantumCircuit, qubit int, register int) {
 	for i := 0; i < len(c.globalState); i++ {
 		binary := convertIndToBinary(i, c.numQubits)
 
-		// on remplit le map avec les valeurs des nouveaux états
+		// fill the map with the values of the new states
 		if binary[qubit] == r {
-			//Si le qubit mesuré correspond, on change rien
+			// If the measured qubit corresponds, we do nothing
 			newStateMap[binary] += c.globalState[i]
 		}
 	}
-	//On a projetté les états sur le résultat de la mesure, il faut normaliser
-	//On calcule la norme
+	// States were projected on the measure result, we need to normalize
+	// compute the norm
 	var norm complex128
 	for _, val := range newStateMap {
 		norm += val * val
 	}
 	norm = cmplx.Sqrt(norm)
 
-	//On normalise
+	//Normalization
 	for key, val := range newStateMap {
 		newStateMap[key] = val / norm
 	}
 
-	//On remplace l'ancien état par le nouveau
+	//Replace the global state with the new state
 	for i := 0; i < len(c.globalState); i++ {
 		c.globalState[i] = newStateMap[convertIndToBinary(i, c.numQubits)]
 	}

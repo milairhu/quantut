@@ -42,18 +42,16 @@ func main() {
 	const NB_EXECUTION = 1
 	startTime := time.Now()
 
-	// Appeler la fonction à mesurer
+	// Call the function to be benchmarked
 	for i := 0; i < NB_EXECUTION; i++ {
 		executeCirc1()
 	}
 
-	// Enregistrez le temps de fin
+	// Record time spent
 	endTime := time.Now()
-
-	// Calculez la durée totale
 	duration := endTime.Sub(startTime)
 
-	// Affichez le temps d'exécution
-	fmt.Printf("La fonction a mis %s pour s'exécuter %d fois.\n", duration, NB_EXECUTION)
+	// Display recorded time
+	fmt.Printf("The function took %s to execute %d times.\n", duration, NB_EXECUTION)
 
 }

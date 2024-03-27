@@ -36,7 +36,7 @@ func xeffect(targetQubit int, generalState []complex128, nbQubit int) []complex1
 		}
 		stateMap[binary] += generalState[i]
 	}
-	//on a le map, on le convertit en tableau
+	//the map is set, we convert it to an array
 	for i := 0; i < len(generalState); i++ {
 		res[i] = stateMap[convertIndToBinary(i, nbQubit)]
 	}
