@@ -2,7 +2,7 @@
 
 Go package for Quantum Computing, implemented as a complement of a project led in the context of the course **IQ01** at the University of Technology of Compiègne (UTC), supervised by [Mr. Walter Schön](https://www.hds.utc.fr/~wschon/dokuwiki/fr/biographie) and [Mr. Ahmed Lounis](https://www.hds.utc.fr/~lounisah/dokuwiki/).
 
-The package is based on the Qiskit and Circ libraries. It can be used to create, display and simulate quantum circuits.
+The package is based on the Qiskit and Cirq libraries. It can be used to create, display and simulate quantum circuits.
 
 ## Functionalities
 
