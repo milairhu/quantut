@@ -20,6 +20,9 @@ var (
 	x = Gate{id: "X", nbQubits: 1, effect: [][]complex128{{complex(0, 0), complex(1, 0)}, {complex(1, 0), complex(0, 0)}}}
 	y = Gate{id: "Y", nbQubits: 1, effect: [][]complex128{{complex(0, 0), complex(0, -1)}, {complex(0, 1), complex(0, 0)}}}
 	z = Gate{id: "Z", nbQubits: 1, effect: [][]complex128{{complex(1, 0), complex(0, 0)}, {complex(0, 0), complex(-1, 0)}}}
+	i = Gate{id: "I", nbQubits: 1, effect: [][]complex128{{complex(1, 0), complex(0, 0)}, {complex(0, 0), complex(1, 0)}}}
+	s = Gate{id: "S", nbQubits: 1, effect: [][]complex128{{complex(1, 0), complex(0, 0)}, {complex(0, 0), complex(0, 1)}}}
+	t = Gate{id: "T", nbQubits: 1, effect: [][]complex128{{complex(1, 0), complex(0, 0)}, {complex(0, 0), complex(1/math.Sqrt(2), 1/math.Sqrt(2))}}} //TODO à tester
 
 	// 2 qubits gates
 	cnot = Gate{id: "CNOT",
@@ -40,6 +43,17 @@ var (
 			{complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0)},
 			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0)},
 			{complex(0, 0), complex(0, 0), complex(0, 0), complex(1, 0)},
+		},
+	}
+
+	cs = Gate{id: "CS",
+		nbQubits:       2,
+		nbControlQubit: 1,
+		effect: [][]complex128{
+			{complex(1, 0), complex(0, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(1, 0), complex(0, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(1, 0), complex(0, 0)},
+			{complex(0, 0), complex(0, 0), complex(0, 0), complex(0, 1)},
 		},
 	}
 

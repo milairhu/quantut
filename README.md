@@ -50,7 +50,7 @@ qc.ToQASM("circuit.qasm", "OPENQASM 2.0")
 
 The package is functionnal. However, it can be improved in the following ways:
 
-- Add **more quantum gates**. So far, only the most common gates are implemented. S and T gates are missing for example.
+- Add **more quantum gates**. So far, only the most common gates are implemented. Among the gates that could be added are the rotation gates (Rx, Ry, Rz).
 - Add **pre-built quantum circuits**. For example, the Grover algorithm, the Shor algorithm, Deutsch-Jozsa algorithm, etc.
 - Improve the display of the circuit. The current display resembles the one of Cirq, but it can be improved. Especially, **some gates could be displayed on a single vertical line** to gain space.
 - Improve the performance of the simulator. The simulator is currently quite slow. It could be improved by **using matrix product** instead of the current "hand-made" method.

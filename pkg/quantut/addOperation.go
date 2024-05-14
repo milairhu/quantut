@@ -1,6 +1,7 @@
 package quantut
 
 // =============== Add gates to the circuit ===============
+
 // Hadmard
 func (c *QuantumCircuit) H(numQubit int) {
 	if numQubit >= c.numQubits || numQubit < 0 {
@@ -33,6 +34,30 @@ func (c *QuantumCircuit) Z(numQubit int) {
 	c.operations = append(c.operations, Operation{gate: z, qubits: []int{numQubit}})
 }
 
+// Identity
+func (c *QuantumCircuit) I(numQubit int) {
+	if numQubit >= c.numQubits || numQubit < 0 {
+		panic("Qubit number out of range")
+	}
+	c.operations = append(c.operations, Operation{gate: i, qubits: []int{numQubit}})
+}
+
+// S gate
+func (c *QuantumCircuit) S(numQubit int) {
+	if numQubit >= c.numQubits || numQubit < 0 {
+		panic("Qubit number out of range")
+	}
+	c.operations = append(c.operations, Operation{gate: s, qubits: []int{numQubit}})
+}
+
+// T gate
+func (c *QuantumCircuit) T(numQubit int) {
+	if numQubit >= c.numQubits || numQubit < 0 {
+		panic("Qubit number out of range")
+	}
+	c.operations = append(c.operations, Operation{gate: t, qubits: []int{numQubit}})
+}
+
 //CONVENTION : control qubits are the first ones in the list of parameters
 
 // CNOT
@@ -49,6 +74,14 @@ func (c *QuantumCircuit) SWAP(qubit1 int, qubit2 int) {
 		panic("Qubit number out of range")
 	}
 	c.operations = append(c.operations, Operation{gate: swap, qubits: []int{qubit1, qubit2}})
+}
+
+// CS
+func (c *QuantumCircuit) CS(control int, target int) {
+	if control >= c.numQubits || control < 0 || target >= c.numQubits || target < 0 {
+		panic("Qubit number out of range")
+	}
+	c.operations = append(c.operations, Operation{gate: cs, qubits: []int{control, target}})
 }
 
 // CCNOT

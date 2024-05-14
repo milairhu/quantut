@@ -28,10 +28,18 @@ func (c *QuantumCircuit) LaunchCircuit() {
 				c.globalState = zeffect(op.Qubits()[0], c.globalState, c.NumQubits())
 			case "H":
 				c.globalState = heffect(op.Qubits()[0], c.globalState, c.NumQubits())
+			case "I":
+				c.globalState = ieffect(op.Qubits()[0], c.globalState, c.NumQubits())
+			case "S":
+				c.globalState = seffect(op.Qubits()[0], c.globalState, c.NumQubits())
+			case "T":
+				c.globalState = teffect(op.Qubits()[0], c.globalState, c.NumQubits())
 			case "CNOT":
 				c.globalState = cnoteffect(op.Qubits()[0], op.Qubits()[1], c.globalState, c.NumQubits())
 			case "SWAP":
 				c.globalState = swapeffect(op.Qubits()[0], op.Qubits()[1], c.globalState, c.NumQubits())
+			case "CS":
+				c.globalState = cseffect(op.Qubits()[0], op.Qubits()[1], c.globalState, c.NumQubits())
 			case "CCNOT":
 				c.globalState = ccnoteffect(op.Qubits()[0], op.Qubits()[1], op.Qubits()[2], c.globalState, c.NumQubits())
 			case "CSWAP":
